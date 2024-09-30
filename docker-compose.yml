@@ -1,0 +1,22 @@
+services:
+  db:
+    container_name: pg_database
+    image: postgres:16.3
+    ports:
+      - '5432:5432'
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: reports
+      POSTGRES_DB: reports
+
+  pg-admin:
+    depends_on:
+      - db
+    container_name: pg_admin
+    image: dpage/pgadmin4:8.6
+    ports:
+      - '8080:80'
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=123456
+      - PGADMIN_DEFAULT_EMAIL=superman@google.com
+    restart: always
