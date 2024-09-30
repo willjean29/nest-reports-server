@@ -3,6 +3,7 @@ import {
   StyleDictionary,
   TDocumentDefinitions,
 } from 'pdfmake/interfaces';
+import { DateFormatter } from 'src/helpers';
 const styles: StyleDictionary = {
   title: {
     bold: true,
@@ -36,7 +37,7 @@ export const getEmployeeLetterReport = () => {
       columns: [
         logo,
         {
-          text: '20 de mayo 2024',
+          text: DateFormatter.getFullDate(new Date()),
           alignment: 'right',
           margin: [30, 10],
         },
