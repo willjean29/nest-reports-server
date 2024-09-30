@@ -1,22 +1,48 @@
-import { StyleDictionary, TDocumentDefinitions } from 'pdfmake/interfaces';
+import {
+  Content,
+  StyleDictionary,
+  TDocumentDefinitions,
+} from 'pdfmake/interfaces';
 const styles: StyleDictionary = {
   title: {
     bold: true,
     alignment: 'center',
     fontSize: 20,
-    margin: [0, 0, 0, 20],
+    margin: [0, 40, 0, 20],
   },
   body: {
     alignment: 'justify',
     lineHeight: 1.5,
-    margin: [0, 0, 0, 30],
+    margin: [0, 0, 0, 80],
   },
   signature: {
     bold: true,
+    fontSize: 14,
   },
 };
+
+const logo: Content = {
+  image: 'assets/tucan-code-logo.png',
+  width: 60,
+  height: 60,
+  alignment: 'left',
+  margin: [30, 10],
+  background: 'red',
+};
+
 export const getEmployeeLetterReport = () => {
   const docDefinition: TDocumentDefinitions = {
+    header: {
+      columns: [
+        logo,
+        {
+          text: '20 de mayo 2024',
+          alignment: 'right',
+          margin: [30, 10],
+        },
+      ],
+    },
+    pageMargins: [40, 80],
     content: [
       {
         text: 'CERTIFICADO DE EMPLEO',
@@ -34,6 +60,15 @@ export const getEmployeeLetterReport = () => {
         [Nombre de la Empresa] 
         [Fecha de Emisión]`,
         style: 'signature',
+      },
+    ],
+    footer: [
+      {
+        text: 'Este documento es una constancia de empleo y no representa un compromiso laboral.',
+        alignment: 'center',
+        italics: true,
+        margin: [0, 40],
+        fontSize: 10,
       },
     ],
     styles: styles,
