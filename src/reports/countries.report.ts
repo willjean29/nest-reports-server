@@ -1,12 +1,40 @@
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { TableCell, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { headerSection } from './sections/header.section';
+import { countries as Country } from '@prisma/client';
+interface RecordOptions {
+  title?: string;
+  subTitle?: string;
+  countries: Country[];
+}
 
-export const getCountryReport = (): TDocumentDefinitions => {
+export const getCountryReport = (
+  options: RecordOptions,
+): TDocumentDefinitions => {
+  const { title, subTitle, countries } = options;
+
+  const headerTable: TableCell[] = [
+    { text: 'ID', bold: true },
+    { text: 'ISO2', bold: true },
+    { text: 'ISO3', bold: true },
+    { text: 'NAME', bold: true },
+    { text: 'CONTINENT', bold: true },
+    { text: 'LOCAL NAME', bold: true },
+  ];
+
+  const countriesContent: TableCell[][] = countries.map((country) => [
+    country.id.toString(),
+    country.iso2,
+    country.iso3,
+    { text: country.name, bold: true },
+    country.continent,
+    country.local_name,
+  ]);
+
   return {
     pageOrientation: 'landscape',
     header: headerSection({
-      title: 'Country Report',
-      subTitle: 'List of countries',
+      title: title ?? 'Country Report',
+      subTitle: subTitle ?? 'List of countries',
     }),
     pageMargins: [40, 80],
     content: [
@@ -14,12 +42,8 @@ export const getCountryReport = (): TDocumentDefinitions => {
         layout: 'lightHorizontalLines',
         table: {
           headerRows: 1,
-          widths: ['*', '*', '*', '*'],
-          body: [
-            ['First', 'Second', 'Third', 'The last one'],
-            ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
-            [{ text: 'Bold value', bold: true }, 'Value 2', 'Value 3', 'Val 4'],
-          ],
+          widths: [50, 50, 50, '*', '*', '*'],
+          body: [headerTable, ...countriesContent],
         },
       },
     ],
