@@ -36,7 +36,7 @@ export const getCountryReport = (
       title: title ?? 'Country Report',
       subTitle: subTitle ?? 'List of countries',
     }),
-    pageMargins: [40, 100],
+    pageMargins: [40, 80],
     content: [
       {
         layout: 'lightHorizontalLines',
@@ -44,6 +44,21 @@ export const getCountryReport = (
           headerRows: 1,
           widths: [50, 50, 50, '*', '*', '*'],
           body: [headerTable, ...countriesContent],
+        },
+      },
+      {
+        text: 'Totales',
+        marginTop: 20,
+        style: {
+          bold: true,
+          fontSize: 18,
+        },
+      },
+      {
+        text: `Total de paises ${countries.length.toString()}`,
+        style: {
+          bold: true,
+          fontSize: 12,
         },
       },
     ],
