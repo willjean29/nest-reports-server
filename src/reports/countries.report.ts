@@ -39,26 +39,58 @@ export const getCountryReport = (
     pageMargins: [40, 80],
     content: [
       {
-        layout: 'lightHorizontalLines',
+        layout: 'customTableLayout01',
         table: {
           headerRows: 1,
           widths: [50, 50, 50, '*', '*', '*'],
-          body: [headerTable, ...countriesContent],
+          body: [
+            headerTable,
+            ...countriesContent,
+            ['', '', '', '', '', ''],
+            [
+              '',
+              '',
+              '',
+              '',
+              'Total',
+              {
+                text: `${countries.length} países`,
+                bold: true,
+              },
+            ],
+          ],
         },
       },
       {
         text: 'Totales',
-        marginTop: 20,
+        margin: [0, 40, 0, 0],
         style: {
-          bold: true,
           fontSize: 18,
+          bold: true,
         },
       },
       {
-        text: `Total de paises ${countries.length.toString()}`,
-        style: {
-          bold: true,
-          fontSize: 12,
+        layout: 'noBorders',
+        table: {
+          headerRows: 1,
+          widths: [50, 50, 70, '*', 'auto', '*'],
+          body: [
+            [
+              {
+                text: 'Total de países',
+                colSpan: 2,
+                bold: true,
+              },
+              {},
+              {
+                text: `${countries.length} países`,
+                bold: true,
+              },
+              {},
+              {},
+              {},
+            ],
+          ],
         },
       },
     ],
