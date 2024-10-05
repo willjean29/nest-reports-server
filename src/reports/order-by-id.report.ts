@@ -20,7 +20,12 @@ const styles: StyleDictionary = {
   date: {
     alignment: 'right',
   },
+  qr: {
+    alignment: 'right',
+    margin: [0, 20],
+  },
 };
+
 export const orderByIdReport = (): TDocumentDefinitions => {
   return {
     header: logoContent,
@@ -46,6 +51,11 @@ export const orderByIdReport = (): TDocumentDefinitions => {
             style: 'date',
           },
         ],
+      },
+      {
+        qr: 'https://cursos.devtalles.com/',
+        fit: 75,
+        style: 'qr',
       },
     ],
     styles: styles,
