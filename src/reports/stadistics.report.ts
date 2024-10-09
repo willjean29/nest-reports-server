@@ -1,6 +1,6 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { generateDoughnutChart } from './charts/doughnut.chart';
 import { headerSection } from './sections';
-import { CHART_COLORS, chartJsToImage } from 'src/helpers';
 export interface TopCountries {
   customers: number;
   country: string;
@@ -9,46 +9,16 @@ interface StadisticsReportOptions {
   topCountruies: TopCountries[];
 }
 
-const generateTopCountriesChart = async (
-  topCountries: TopCountries[],
-): Promise<string> => {
-  const data = {
-    labels: topCountries.map((item) => item.country),
-    datasets: [
-      {
-        label: 'My First Dataset',
-        data: topCountries.map((item) => item.customers),
-        backgroundColor: CHART_COLORS,
-        hoverOffset: 4,
-      },
-    ],
-  };
-  const config = {
-    type: 'doughnut',
-    data: data,
-    options: {
-      legend: {
-        position: 'left',
-      },
-      plugins: {
-        datalabels: {
-          color: 'white',
-          font: {
-            weight: 'bold',
-            size: 16,
-          },
-        },
-      },
-    },
-  };
-
-  return chartJsToImage(config);
-};
-
 export const getStadistics = async (
   options: StadisticsReportOptions,
 ): Promise<TDocumentDefinitions> => {
-  const data = await generateTopCountriesChart(options.topCountruies);
+  const data = await generateDoughnutChart({
+    entries: options.topCountruies.map((item) => ({
+      label: item.country,
+      value: item.customers,
+    })),
+    position: 'left',
+  });
   return {
     header: headerSection({
       title: 'Estadísticas',
