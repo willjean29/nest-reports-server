@@ -39,7 +39,8 @@ export class StoreReportsService extends PrismaClient implements OnModuleInit {
   }
 
   async getSvgCharts() {
-    const doc = this.printerService.createPdf(getBasicSvgChart());
+    const content = await getBasicSvgChart();
+    const doc = this.printerService.createPdf(content);
     return doc;
   }
 }
