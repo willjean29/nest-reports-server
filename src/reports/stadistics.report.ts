@@ -1,6 +1,7 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateDoughnutChart } from './charts/doughnut.chart';
 import { headerSection } from './sections';
+import { generatetLineChart } from './charts/line.chart';
 export interface TopCountries {
   customers: number;
   country: string;
@@ -12,13 +13,16 @@ interface StadisticsReportOptions {
 export const getStadistics = async (
   options: StadisticsReportOptions,
 ): Promise<TDocumentDefinitions> => {
-  const data = await generateDoughnutChart({
-    entries: options.topCountruies.map((item) => ({
-      label: item.country,
-      value: item.customers,
-    })),
-    position: 'left',
-  });
+  const [donutChart, lineChart] = await Promise.all([
+    generateDoughnutChart({
+      entries: options.topCountruies.map((item) => ({
+        label: item.country,
+        value: item.customers,
+      })),
+      position: 'left',
+    }),
+    generatetLineChart(),
+  ]);
   return {
     header: headerSection({
       title: 'Estadísticas',
@@ -40,7 +44,7 @@ export const getStadistics = async (
                 marginBottom: 10,
               },
               {
-                image: data,
+                image: donutChart,
                 width: 300,
                 alignment: 'center',
               },
@@ -62,6 +66,10 @@ export const getStadistics = async (
             },
           },
         ],
+      },
+      {
+        image: lineChart,
+        width: 500,
       },
     ],
   };

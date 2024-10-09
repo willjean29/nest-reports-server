@@ -1,7 +1,7 @@
 import axios from 'axios';
 import colorLib from '@kurkle/color';
 interface ChartOptions {
-  with?: number;
+  width?: number;
   height?: number;
 }
 export const chartJsToImage = async (
@@ -9,7 +9,7 @@ export const chartJsToImage = async (
   options: ChartOptions = {},
 ) => {
   const params = new URLSearchParams();
-  if (options.with) params.append('width', options.with.toString());
+  if (options.width) params.append('width', options.width.toString());
   if (options.height) params.append('height', options.height.toString());
   const encondedUri = encodeURIComponent(JSON.stringify(chartConfig));
   const chartUri = `https://quickchart.io/chart?c=${encondedUri}&${params.toString()}`;
