@@ -1,26 +1,13 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import fs from 'fs';
-import { chartJsToImage } from 'src/helpers';
+import { chartJsToImage, months } from 'src/helpers';
 const svgContent = fs.readFileSync('assets/ford.svg', 'utf8');
 
 const generateChartImage = async (): Promise<string> => {
   const chartConfig = {
     type: 'bar', // Show a bar chart
     data: {
-      labels: [
-        'Enero',
-        'Febrero',
-        'Marzo',
-        'Abril',
-        'Mayo',
-        'Junio',
-        'Julio',
-        // 'Agosto',
-        // 'Setiembre',
-        // 'Octubre',
-        // 'Noviembre',
-        // 'Diciembre',
-      ], // Set X-axis labels
+      labels: months({ count: 7 }), // Set X-axis labels
       datasets: [
         {
           label: 'My First Dataset',
@@ -51,8 +38,33 @@ const generateChartImage = async (): Promise<string> => {
   return chartJsToImage(chartConfig, {});
 };
 
+const generateDounutChartImage = async (): Promise<string> => {
+  const data = {
+    labels: ['Red', 'Blue', 'Yellow'],
+    datasets: [
+      {
+        label: 'My First Dataset',
+        data: [300, 50, 100],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  };
+  const config = {
+    type: 'doughnut',
+    data: data,
+  };
+
+  return chartJsToImage(config, {});
+};
+
 export const getBasicSvgChart = async (): Promise<TDocumentDefinitions> => {
   const chartContent = await generateChartImage();
+  const dounatChartContent = await generateDounutChartImage();
   return {
     content: [
       {
@@ -62,6 +74,10 @@ export const getBasicSvgChart = async (): Promise<TDocumentDefinitions> => {
       },
       {
         image: chartContent,
+        width: 500,
+      },
+      {
+        image: dounatChartContent,
         width: 500,
       },
     ],
