@@ -1,6 +1,6 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { headerSection } from './sections';
-import { chartJsToImage } from 'src/helpers';
+import { CHART_COLORS, chartJsToImage } from 'src/helpers';
 export interface TopCountries {
   customers: number;
   country: string;
@@ -18,6 +18,7 @@ const generateTopCountriesChart = async (
       {
         label: 'My First Dataset',
         data: topCountries.map((item) => item.customers),
+        backgroundColor: CHART_COLORS,
         hoverOffset: 4,
       },
     ],
@@ -53,11 +54,44 @@ export const getStadistics = async (
       title: 'Estadísticas',
       subTitle: 'Gráficos y estadísticas de la tienda',
     }),
-    pageMargins: [40, 60],
+    pageMargins: [40, 80],
     content: [
       {
-        image: data,
-        width: 500,
+        columns: [
+          {
+            width: '*',
+            stack: [
+              {
+                text: 'Top 10 de países con más clientes',
+                alignment: 'center',
+                style: {
+                  fontSize: 10,
+                },
+                marginBottom: 10,
+              },
+              {
+                image: data,
+                width: 300,
+                alignment: 'center',
+              },
+            ],
+          },
+          {
+            width: 'auto',
+            layout: 'lightHorizontalLines',
+            table: {
+              headerRows: 1,
+              widths: ['*', 'auto'],
+              body: [
+                ['Country', 'Customers'],
+                ...options.topCountruies.map((item) => [
+                  item.country,
+                  item.customers,
+                ]),
+              ],
+            },
+          },
+        ],
       },
     ],
   };
