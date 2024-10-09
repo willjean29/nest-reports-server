@@ -2,25 +2,22 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { headerSection } from './sections';
 import { chartJsToImage } from 'src/helpers';
 export interface TopCountries {
-  _count: number;
+  customers: number;
   country: string;
 }
 interface StadisticsReportOptions {
   topCountruies: TopCountries[];
 }
 
-const generateTopCountriesChart = async (): Promise<string> => {
+const generateTopCountriesChart = async (
+  topCountries: TopCountries[],
+): Promise<string> => {
   const data = {
-    labels: ['Red', 'Blue', 'Yellow'],
+    labels: topCountries.map((item) => item.country),
     datasets: [
       {
         label: 'My First Dataset',
-        data: [300, 50, 100],
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)',
-        ],
+        data: topCountries.map((item) => item.customers),
         hoverOffset: 4,
       },
     ],
@@ -28,16 +25,29 @@ const generateTopCountriesChart = async (): Promise<string> => {
   const config = {
     type: 'doughnut',
     data: data,
+    options: {
+      legend: {
+        position: 'left',
+      },
+      plugins: {
+        datalabels: {
+          color: 'white',
+          font: {
+            weight: 'bold',
+            size: 16,
+          },
+        },
+      },
+    },
   };
 
-  return chartJsToImage(config, {});
+  return chartJsToImage(config);
 };
 
 export const getStadistics = async (
   options: StadisticsReportOptions,
 ): Promise<TDocumentDefinitions> => {
-  console.log({ options });
-  const data = await generateTopCountriesChart();
+  const data = await generateTopCountriesChart(options.topCountruies);
   return {
     header: headerSection({
       title: 'Estadísticas',

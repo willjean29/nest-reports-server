@@ -6,7 +6,7 @@ interface ChartOptions {
 }
 export const chartJsToImage = async (
   chartConfig: unknown,
-  options: ChartOptions,
+  options: ChartOptions = {},
 ) => {
   const params = new URLSearchParams();
   if (options.with) params.append('width', options.with.toString());
