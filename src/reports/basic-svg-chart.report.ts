@@ -48,7 +48,7 @@ const generateChartImage = async (): Promise<string> => {
       ],
     },
   };
-  return chartJsToImage(chartConfig);
+  return chartJsToImage(chartConfig, {});
 };
 
 export const getBasicSvgChart = async (): Promise<TDocumentDefinitions> => {
