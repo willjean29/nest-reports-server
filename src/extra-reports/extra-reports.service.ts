@@ -5,6 +5,7 @@ import { getHtmlContent } from 'src/helpers/html-to-pdfmake';
 import { PrinterService } from 'src/printer/printer.service';
 import { headerSection } from 'src/reports/sections';
 import { footerSection } from '../reports/sections/footer.section';
+import { getCommunityReport } from 'src/reports';
 
 @Injectable()
 export class ExtraReportsService {
@@ -27,6 +28,14 @@ export class ExtraReportsService {
       footer: footerSection,
     };
     const doc = this.printerService.createPdf(docDefinition);
+    return doc;
+  }
+
+  getCommunity() {
+    const docDefinition = getCommunityReport();
+
+    const doc = this.printerService.createPdf(docDefinition);
+
     return doc;
   }
 }
